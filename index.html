@@ -1,0 +1,67 @@
+<!--
+  Hit RUN to see this project in action!
+  
+  This project will auto-refresh as you edit the HTML, CSS and JS. See README.md for more info (including how to disable auto-refresh and install packages).
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>NEON HUB - Login</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen">
+    <main>
+      <h1 class="title">NEON HUB</h1>
+      <div class="login-form">
+        <h2>Acesso Restrito</h2>
+        <form onsubmit="login(event)">
+          <div class="form-group">
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit" class="login-btn">ENTRAR</button>
+        </form>
+        <div id="error-message" class="error-message"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Main Content (hidden initially) -->
+  <div id="main-content" class="main-content" style="display: none;">
+    <main>
+      <div class="header">
+        <h1 class="title">Links de Comunidade</h1>
+        <button onclick="logout()" class="logout-btn">Sair</button>
+      </div>
+      <p class="description">Junte-se às nossas comunidades online!</p>
+
+      <section class="grid">
+        <a href="https://chat.whatsapp.com/L5Inc7rtAd1IlvoHXFizYv" class='card' target="_blank">
+          <h2>WhatsApp &rarr;</h2>
+          <p>Junte-se ao nosso grupo no WhatsApp</p>
+        </a>
+
+        <a href="https://discord.gg/YTEJXhpUmp" class='card' target="_blank">
+          <h2>Discord &rarr;</h2>
+          <p>Entre no nosso servidor do Discord</p>
+        </a>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
