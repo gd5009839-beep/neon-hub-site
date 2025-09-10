@@ -5,34 +5,78 @@
 -->
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>NEON HUB - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEON HUB - Portal exclusivo para comunidades WhatsApp e Discord">
+  <meta name="keywords" content="neon, hub, gaming, comunidade, discord, whatsapp">
+  <meta name="author" content="NEON HUB">
+  <meta property="og:title" content="NEON HUB - Portal de Comunidades">
+  <meta property="og:description" content="Acesse nossas comunidades exclusivas no WhatsApp e Discord">
+  <meta property="og:type" content="website">
+  <title>NEON HUB - Portal Exclusivo</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
+  <!-- Particles Background -->
+  <div class="particles-container">
+    <canvas id="particles-canvas"></canvas>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">INICIANDO NEON HUB...</div>
+  </div>
+
   <!-- Login Screen -->
-  <div id="login-screen" class="login-screen">
+  <div id="login-screen" class="login-screen" style="display: none;">
     <main>
-      <h1 class="title">NEON HUB</h1>
+      <h1 class="title glow-text">
+        <span class="letter">N</span>
+        <span class="letter">E</span>
+        <span class="letter">O</span>
+        <span class="letter">N</span>
+        <span class="letter"> </span>
+        <span class="letter">H</span>
+        <span class="letter">U</span>
+        <span class="letter">B</span>
+      </h1>
       <div class="login-form">
-        <h2>Acesso Restrito</h2>
+        <h2>🔒 ACESSO RESTRITO</h2>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span id="status-text">Sistema Online</span>
+        </div>
         <form onsubmit="login(event)">
           <div class="form-group">
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
+            <label for="username">👤 Usuário:</label>
+            <input type="text" id="username" name="username" required autocomplete="username">
           </div>
           <div class="form-group">
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="password">🔑 Senha:</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
           </div>
-          <button type="submit" class="login-btn">ENTRAR</button>
+          <button type="submit" class="login-btn" id="login-btn">
+            <span class="btn-text">ENTRAR</span>
+            <div class="btn-loading" style="display: none;">
+              <div class="btn-spinner"></div>
+            </div>
+          </button>
         </form>
         <div id="error-message" class="error-message"></div>
+        <div class="login-footer">
+          <div class="online-users">
+            <span class="online-dot"></span>
+            <span id="online-count">42</span> usuários online
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -41,22 +85,75 @@
   <div id="main-content" class="main-content" style="display: none;">
     <main>
       <div class="header">
-        <h1 class="title">Links de Comunidade</h1>
-        <button onclick="logout()" class="logout-btn">Sair</button>
+        <h1 class="title glow-text">🌐 PORTAL DE COMUNIDADES</h1>
+        <div class="user-info">
+          <span class="welcome-text">Bem-vindo, <span id="username-display">Usuário</span></span>
+          <button onclick="logout()" class="logout-btn" aria-label="Fazer logout">
+            <span>🚪 SAIR</span>
+          </button>
+        </div>
       </div>
-      <p class="description">Junte-se às nossas comunidades online!</p>
+      
+      <p class="description pulse-text">🚀 Conecte-se às nossas comunidades exclusivas!</p>
+
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-number" id="whatsapp-members">1,247</span>
+          <span class="stat-label">WhatsApp</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="discord-members">3,891</span>
+          <span class="stat-label">Discord</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Online</span>
+        </div>
+      </div>
 
       <section class="grid">
-        <a href="https://chat.whatsapp.com/L5Inc7rtAd1IlvoHXFizYv" class='card' target="_blank">
-          <h2>WhatsApp &rarr;</h2>
-          <p>Junte-se ao nosso grupo no WhatsApp</p>
+        <a href="https://chat.whatsapp.com/L5Inc7rtAd1IlvoHXFizYv" class='card whatsapp-card' target="_blank" onclick="trackClick('whatsapp')">
+          <div class="card-icon">💬</div>
+          <h2>WhatsApp Community</h2>
+          <p>📱 Conversas em tempo real</p>
+          <p>🎮 Gaming e discussões</p>
+          <div class="card-stats">
+            <span class="online-indicator">🟢</span>
+            <span>Active now</span>
+          </div>
         </a>
 
-        <a href="https://discord.gg/YTEJXhpUmp" class='card' target="_blank">
-          <h2>Discord &rarr;</h2>
-          <p>Entre no nosso servidor do Discord</p>
+        <a href="https://discord.gg/YTEJXhpUmp" class='card discord-card' target="_blank" onclick="trackClick('discord')">
+          <div class="card-icon">🎮</div>
+          <h2>Discord Server</h2>
+          <p>🎤 Voice channels</p>
+          <p>🏆 Gaming tournaments</p>
+          <div class="card-stats">
+            <span class="online-indicator">🟢</span>
+            <span>High activity</span>
+          </div>
         </a>
+
+        <div class='card info-card'>
+          <div class="card-icon">📊</div>
+          <h2>Hub Statistics</h2>
+          <p>🔥 <span id="daily-active">892</span> usuários ativos hoje</p>
+          <p>⚡ <span id="messages-today">15,234</span> mensagens enviadas</p>
+          <div class="card-stats">
+            <span class="pulse-dot"></span>
+            <span>Live updates</span>
+          </div>
+        </div>
       </section>
+
+      <div class="quick-actions">
+        <button class="action-btn" onclick="refreshStats()">
+          <span>🔄 Atualizar Stats</span>
+        </button>
+        <button class="action-btn" onclick="toggleTheme()">
+          <span>🎨 Mudar Tema</span>
+        </button>
+      </div>
     </main>
   </div>
 
