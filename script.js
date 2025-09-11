@@ -28,8 +28,8 @@ const AppState = {
     whatsappMembers: 1247,
     discordMembers: 3891,
     onlineCount: 42,
-    dailyActive: 892,
-    messagesToday: 15234
+    dailyActive: 888,
+    messagesToday: 3284
   }
 };
 
@@ -372,7 +372,8 @@ class DashboardManager {
     AppState.stats.whatsappMembers = Math.max(1200, Math.min(1300, AppState.stats.whatsappMembers));
     AppState.stats.discordMembers = Math.max(3800, Math.min(4000, AppState.stats.discordMembers));
     AppState.stats.onlineCount = Math.max(35, Math.min(50, AppState.stats.onlineCount));
-    AppState.stats.dailyActive = Math.max(800, Math.min(950, AppState.stats.dailyActive));
+    AppState.stats.dailyActive = Math.max(880, Math.min(900, AppState.stats.dailyActive));
+    AppState.stats.messagesToday = Math.max(3200, Math.min(3400, AppState.stats.messagesToday));
     
     // Atualizar UI com animação
     this.animateCounter('whatsapp-members', AppState.stats.whatsappMembers);
