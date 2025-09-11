@@ -25,8 +25,8 @@ const AppState = {
   loadingComplete: false,
   particlesInitialized: false,
   stats: {
-    whatsappMembers: 1247,
-    discordMembers: 3891,
+    whatsappMembers: 1245,
+    discordMembers: 3886,
     onlineCount: 42,
     dailyActive: 888,
     messagesToday: 3284
@@ -369,8 +369,8 @@ class DashboardManager {
     AppState.stats.messagesToday += Math.floor(Math.random() * 50);
     
     // Manter números em ranges realistas
-    AppState.stats.whatsappMembers = Math.max(1200, Math.min(1300, AppState.stats.whatsappMembers));
-    AppState.stats.discordMembers = Math.max(3800, Math.min(4000, AppState.stats.discordMembers));
+    AppState.stats.whatsappMembers = Math.max(1240, Math.min(1250, AppState.stats.whatsappMembers));
+    AppState.stats.discordMembers = Math.max(3880, Math.min(3890, AppState.stats.discordMembers));
     AppState.stats.onlineCount = Math.max(35, Math.min(50, AppState.stats.onlineCount));
     AppState.stats.dailyActive = Math.max(880, Math.min(900, AppState.stats.dailyActive));
     AppState.stats.messagesToday = Math.max(3200, Math.min(3400, AppState.stats.messagesToday));
