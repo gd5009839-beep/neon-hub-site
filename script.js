@@ -164,7 +164,7 @@ class LoadingManager {
 // Sistema de Autenticação Melhorado
 class AuthManager {
   constructor() {
-    this.loginForm = document.querySelector('form');
+    this.loginForm = document.getElementById('login-form') || document.querySelector('form');
     this.usernameInput = document.getElementById('username');
     this.passwordInput = document.getElementById('password');
     this.errorMessage = document.getElementById('error-message');
@@ -176,13 +176,18 @@ class AuthManager {
   }
 
   bindEvents() {
-    this.loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+    // Event listener para o formulário de login
+    if (this.loginForm) {
+      this.loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+    }
     
     // Adicionar efeitos de digitação
     [this.usernameInput, this.passwordInput].forEach(input => {
-      input.addEventListener('focus', this.handleInputFocus);
-      input.addEventListener('blur', this.handleInputBlur);
-      input.addEventListener('input', this.handleInputChange);
+      if (input) {
+        input.addEventListener('focus', this.handleInputFocus);
+        input.addEventListener('blur', this.handleInputBlur);
+        input.addEventListener('input', this.handleInputChange);
+      }
     });
   }
 
@@ -417,7 +422,37 @@ class DashboardManager {
     window.refreshStats = () => this.refreshStats();
     window.toggleTheme = () => this.toggleTheme();
     window.trackClick = (platform) => this.trackClick(platform);
-    window.logout = () => AuthManager.logout();
+    
+    // Adicionar event listeners para elementos do DOM
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        if (globalAuthManager) {
+          globalAuthManager.logout();
+        }
+      });
+    }
+    
+    const refreshBtn = document.getElementById('refresh-stats-btn');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', () => this.refreshStats());
+    }
+    
+    const themeBtn = document.getElementById('toggle-theme-btn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => this.toggleTheme());
+    }
+    
+    // Event listeners para os cards de comunidade
+    const whatsappCard = document.querySelector('[data-platform="whatsapp"]');
+    if (whatsappCard) {
+      whatsappCard.addEventListener('click', () => this.trackClick('whatsapp'));
+    }
+    
+    const discordCard = document.querySelector('[data-platform="discord"]');
+    if (discordCard) {
+      discordCard.addEventListener('click', () => this.trackClick('discord'));
+    }
   }
 
   static refreshStats() {
@@ -557,13 +592,44 @@ class App {
   }
 }
 
-// Tornar funções globais para compatibilidade
-window.login = (event) => AuthManager.prototype.handleLogin.call(new AuthManager(), event);
-window.logout = () => new AuthManager().logout();
+// Instâncias globais
+let globalApp, globalAuthManager, globalLoadingManager;
 
 // Inicializar aplicação quando DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
-  new App();
+  globalApp = new App();
+  
+  // Esperar um pouco para garantir que todas as instâncias foram criadas
+  setTimeout(() => {
+    globalAuthManager = globalApp.authManager;
+    globalLoadingManager = globalApp.loadingManager;
+    
+    // Expor funções globais para compatibilidade
+    window.login = (event) => {
+      if (globalAuthManager) {
+        return globalAuthManager.handleLogin(event);
+      }
+    };
+    
+    window.logout = () => {
+      if (globalAuthManager) {
+        return globalAuthManager.logout();
+      }
+    };
+    
+    // Configurar event listeners adicionais para elementos que podem não existir ainda
+    const setupAdditionalListeners = () => {
+      const loginForm = document.getElementById('login-form');
+      if (loginForm && globalAuthManager) {
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          globalAuthManager.handleLogin(e);
+        });
+      }
+    };
+    
+    setupAdditionalListeners();
+  }, 100);
 });
 
 // Adicionar service worker para PWA (opcional)
